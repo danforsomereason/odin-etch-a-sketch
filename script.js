@@ -1,17 +1,26 @@
-let size = 25;
-let containerSize = size * 10;
+let size = 64;
+let squareWidth = (size) => {
+    let squares = size * size;
+    console.log("Number of squares: ", squares);
+    let squareArea = Math.floor(160000 / squares);
+    console.log("Area of each square: ", squareArea);
+    let squareWidth = Math.floor(Math.sqrt(squareArea));
+    console.log("Width of each square: ", squareWidth);
+    return squareWidth;
+}
 
 // create container
-
 const container = document.createElement('div');
 container.classList.add("container");
 container.setAttribute("style",
-    `outline: 1px solid lime; display: flex; flex-wrap: wrap; width: ${containerSize}px; margin: auto;`
+    `outline: 1px solid lime; display: flex; flex-wrap: wrap; width: 400px; height: 400px; margin: auto;`
 )
 document.body.prepend(container);
 
 
 // create grid of divs
+function generateSquares(size){
+    const side = squareWidth(size);
     for(let i = 0; i < size; i++) {
         const row = document.createElement('div');
         row.classList.add("row");
@@ -20,7 +29,7 @@ document.body.prepend(container);
         for(let j = 0; j < size; j++) {
             const square = document.createElement('div');
             // square.classList.toggle("square");
-            square.setAttribute("style", `outline: 1px solid black; margin: 0; height: 10px; width: 10px;`);
+            square.setAttribute("style", `outline: 1px solid black; margin: 0; height: ${side}px; width: ${side}px;`);
             row.appendChild(square);
 
             square.addEventListener("mousemove", ()=> {
@@ -28,7 +37,11 @@ document.body.prepend(container);
             })
         }
     }
+}
 
+window.addEventListener("load", ()=> {
+    generateSquares(size);
+})
 
 // create buttons
 const changeSizeBtn = document.createElement('button');
@@ -43,9 +56,10 @@ changeSizeBtn.addEventListener('click', ()=> {
     } else if (size > 99){
         alert("You must enter a number between 2 and 100")
     } else {
-        containerSize = size * 10;
-        console.log(size);
-        
+        container.remove();
+        createContainer();
+        generateSquares(size);
+        console.log("Result of listener: ", size, squareWidth);
     }
 })
 
